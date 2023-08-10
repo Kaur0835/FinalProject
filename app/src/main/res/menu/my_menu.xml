@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_bear1"
+        android:icon="@drawable/app_bear_icon"
+        android:title="About"
+        app:showAsAction="always|ifRoom" />
+
+    <item
+        android:id="@+id/item_bear2"
+        android:icon="@drawable/garbage_icon_bear"
+        android:title="Delete"
+        app:showAsAction="always|ifRoom" />
+
+    <item
+        android:id="@+id/item_bear3"
+        android:icon="@drawable/help_icon_bear"
+        android:title="Help"
+        app:showAsAction="always|ifRoom" />
+
+
+</menu>

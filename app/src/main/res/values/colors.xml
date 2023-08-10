@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <!--Bear Base Colors-->
+    <color name="my_primary_bear">#FF7043</color>
+    <color name="my_secondary_bear">#FFC107</color>
+    <color name="my_statusbar_bear">#FFE082</color>
+
+    <color name="my_text_bear">#D50000</color>
+
 </resources>
