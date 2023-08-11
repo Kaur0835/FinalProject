@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">slutprojekt</string>
+    <string name="image_bear_generator">björn generator</string>
+    <string name="enter_the_width">Ange bredd</string>
+    <string name="enter_the_height">Ange höjd</string>
+    <string name="generate">generera</string>
+    <string name="image_bear">bild björn</string>
+</resources>

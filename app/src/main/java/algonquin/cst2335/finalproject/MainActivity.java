@@ -3,9 +3,13 @@ package algonquin.cst2335.finalproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+
+import algonquin.cst2335.finalproject.databinding.ActivityBearBinding;
 import algonquin.cst2335.finalproject.databinding.ActivityMainBinding;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,11 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
-        //Intent bearPage = new Intent( MainActivity.this, BearActivity.class);
 
         binding.bearButton.setOnClickListener(click -> {
 
+
             Intent bearPage = new Intent(MainActivity.this, BearActivity.class);
+            bearPage.putExtra("Bear Image", " ");
             startActivity(bearPage);
 
         });
@@ -49,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
     }
-
 
     @Override
     protected void onDestroy() {

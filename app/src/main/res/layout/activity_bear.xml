@@ -17,72 +17,90 @@
         android:background="@color/my_primary_bear"
         />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        android:id="@+id/fragmentLocation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        >
 
-        <TextView
-            android:id="@+id/bear_textview"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="@color/my_statusbar_bear"
-            android:text="Image Bear Generator"
-            android:textAlignment="center"
-            android:textColor="?android:attr/colorEdgeEffect"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/bear_width"
-            android:layout_width="143dp"
-            android:layout_height="119dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="64dp"
-            android:inputType="number"
-            android:text="Enter the width"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bear_textview" />
+            <TextView
+                android:id="@+id/bear_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@color/my_statusbar_bear"
+                android:text="@string/image_bear_generator"
+                android:textAlignment="center"
+                android:textColor="?android:attr/colorEdgeEffect"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-
-        <EditText
-            android:id="@+id/bear_height"
-            android:layout_width="143dp"
-            android:layout_height="119dp"
-            android:layout_marginEnd="32dp"
-            android:inputType="number"
-            android:text="Enter the height"
-            app:layout_constraintBottom_toBottomOf="@+id/bear_width"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <ImageView
-            android:id="@+id/bear_byImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="124dp"
-            app:layout_constraintEnd_toStartOf="@+id/bear_height"
-            app:layout_constraintStart_toEndOf="@+id/bear_width"
-            app:layout_constraintTop_toBottomOf="@+id/bear_textview"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
-        <Button
-            android:id="@+id/bearGenerator_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="190dp"
-            android:text="GENERATE"
-            android:textColor="@color/my_statusbar_bear"
-            android:textSize="25dp"
-            app:layout_constraintEnd_toStartOf="@+id/bear_height"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/bear_width"
-            app:layout_constraintTop_toBottomOf="@+id/bear_byImage" />
+            <EditText
+                android:id="@+id/bear_width"
+                android:layout_width="143dp"
+                android:layout_height="119dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="64dp"
+                android:inputType="number"
+                android:text="@string/enter_the_width"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bear_textview" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/bear_height"
+                android:layout_width="143dp"
+                android:layout_height="119dp"
+                android:layout_marginEnd="32dp"
+                android:inputType="number"
+                android:text="@string/enter_the_height"
+                app:layout_constraintBottom_toBottomOf="@+id/bear_width"
+                app:layout_constraintEnd_toEndOf="parent" />
 
+            <ImageView
+                android:id="@+id/bear_byImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="124dp"
+                app:layout_constraintEnd_toStartOf="@+id/bear_height"
+                app:layout_constraintStart_toEndOf="@+id/bear_width"
+                app:layout_constraintTop_toBottomOf="@+id/bear_textview"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+            <Button
+                android:id="@+id/bearGenerator_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="190dp"
+                android:text="@string/generate"
+                android:textColor="@color/my_statusbar_bear"
+                android:textSize="25dp"
+                app:layout_constraintEnd_toStartOf="@+id/bear_height"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/bear_width"
+                app:layout_constraintTop_toBottomOf="@+id/bear_byImage" />
+
+            <ImageView
+                android:id="@+id/bearImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bearGenerator_button"
+                app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </LinearLayout>

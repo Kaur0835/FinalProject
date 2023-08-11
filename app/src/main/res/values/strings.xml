@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FinalProject</string>
+    <string name="image_bear_generator">Image Bear Generator</string>
+    <string name="enter_the_width">Enter the width</string>
+    <string name="enter_the_height">Enter the height</string>
+    <string name="generate">GENERATE</string>
+    <string name="image_bear">IMAGE BEAR</string>
 </resources>
