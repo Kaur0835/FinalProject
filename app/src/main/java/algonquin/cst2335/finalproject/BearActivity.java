@@ -3,6 +3,7 @@ package algonquin.cst2335.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -39,8 +41,7 @@ import java.util.concurrent.Executors;
 import algonquin.cst2335.finalproject.databinding.ActivityBearBinding;
 
 /**
- *
- * Activity to generate bear
+ * Activity to generate a bear image, save and delete.
  *
  * @author Iesha
  * @version 1.0
@@ -48,36 +49,88 @@ import algonquin.cst2335.finalproject.databinding.ActivityBearBinding;
 public class BearActivity extends AppCompatActivity {
 
     /**
+     * This holds android ID's
      *
      */
-    private ActivityBearBinding binding;
+    private ActivityBearBinding binding2;
 
     /**
+     * This holds queues of volley requests
      *
      */
     protected RequestQueue queue = null;
 
+    /**
+     * This functions initailizes layout and runs various events;
+     * such as buttons, menu, preferences and image request
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.
+     *     <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bear);
+
+
+        binding2 = ActivityBearBinding.inflate(getLayoutInflater());
+
+        setContentView(binding2.getRoot());
+
+        binding2.bearRecycleView.setAdapter(new RecyclerView.Adapter<ImageRowHolder>() {
+            /**
+             * This function crates view holder object
+             * @param parent   The ViewGroup into which the new View will be added after it is bound to
+             *                 an adapter position.
+             * @param viewType The view type of the new View.
+             * @return
+             */
+            @NonNull
+            @Override
+            public ImageRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return null;
+            }
+
+            /**
+             * This function  initializes a view holder to go at the row specified by the position parameter.
+             *
+             * @param holder   The ViewHolder which should be updated to represent the contents of the
+             *                 item at the given position in the data set.
+             * @param position The position of the item within the adapter's data set.
+             */
+            @Override
+            public void onBindViewHolder(@NonNull ImageRowHolder holder, int position) {
+
+            }
+
+            /**
+             * This function passes the number item draws
+             * @return 0
+             */
+            @Override
+            public int getItemCount() {
+                return 0;
+            }
+        });
+
+        setSupportActionBar(binding2.myToolbar);
+
 
         queue = Volley.newRequestQueue(this);
-        binding = ActivityBearBinding.inflate(getLayoutInflater());
 
-        Intent fromPrevious = getIntent();
+        SharedPreferences bearprefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = bearprefs.edit();
+
+        binding2.bearGeneratorButton.setOnClickListener(clk -> {
 
 
-        SharedPreferences bearPrefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        binding.bearHeight.setText( bearPrefs.getString("Height", null) );
-        binding.bearWidth.setText( bearPrefs.getString("Width", null) );
+            edit.putString("Height", binding2.bearHeight.getText().toString() );
+            edit.putString("Width", binding2.bearWidth.getText().toString() );
 
-        setSupportActionBar(binding.myToolbar);
 
-        binding.bearGeneratorButton.setOnClickListener(clk -> {
-
-            String width = binding.bearWidth.getText().toString();
-            String height = binding.bearHeight.getText().toString();
+            String width = binding2.bearWidth.getText().toString();
+            String height = binding2.bearHeight.getText().toString();
             String stringURL = null;
 
             try {
@@ -85,35 +138,38 @@ public class BearActivity extends AppCompatActivity {
                             + URLEncoder.encode(width,"UTF-8")
                             +  "/"
                             + URLEncoder.encode(height,"UTF-8")
-                            + "&appid=a656d228edf40e91a99c6c1412a8dfbe&units=pixels";
+                            ;
             } catch (UnsupportedEncodingException e) {
                     throw new RuntimeException(e);
             }
+
+            edit.putString("URL", stringURL);
+
+
 
             //this goes in the button click handler:
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, stringURL, null,
                     (response) -> {
                         try{
 
-                            JSONObject dim = response.getJSONObject( "dim" );
-
                             JSONArray bearArray = response.getJSONArray ( "img" );
                             JSONObject position0 = bearArray.getJSONObject(0);
 
+                            int vis = response.getInt("visibility");
+                            String name = response.getString( "baseURI" );
 
-                            String imageUrl = "http://placebear.com/" + width + "/" + height + ".png";
+                            String imageUrl = "http://placebear.com/" + width + "/" + height + ".jpg";
 
                             ImageRequest imgReq = new ImageRequest(imageUrl, new Response.Listener<Bitmap>() {
                                 @Override
                                 public void onResponse(Bitmap bitmap) {
-                                    binding.bearImage.setImageBitmap(bitmap);
+                                    binding2.bearImage.setImageBitmap(bitmap);
                                     Bitmap image = bitmap;
-
 
                                     try {
                                         image.compress(Bitmap.CompressFormat.PNG,100, BearActivity.this.openFileOutput(
 
-                                                image + ".png", Activity.MODE_PRIVATE) );
+                                                imageUrl+ ".png", Activity.MODE_PRIVATE) );
 
                                     } catch (FileNotFoundException e) {
                                         e.printStackTrace();
@@ -141,16 +197,27 @@ public class BearActivity extends AppCompatActivity {
                     (error) -> {        });
             queue.add(request);
 
+
+            edit.apply();
         });
 
     }
 
     /**
-     * This creates menu to be selected
+     * This functions holds the item in a recycler view
+     */
+    class ImageRowHolder extends RecyclerView.ViewHolder {
+        public ImageRowHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    /**
+     * This function creates menu to be selected
      *
      * @param menu The options menu in which you place your items.
      *
-     * @return true
+     * @return true for menu created
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,21 +229,29 @@ public class BearActivity extends AppCompatActivity {
         return true;
     }
 
-
+    /**
+     * This function identifies the menu option selected by user and runs Toasts and Alertdialog.
+     *
+     * @param item The menu item that was selected.
+     * @return true and runs event of menu item selected
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-        binding = ActivityBearBinding.inflate(getLayoutInflater());
+        binding2 = ActivityBearBinding.inflate(getLayoutInflater());
         //imageselected = model.selectedImage.getValue();
 
-        if( item.getItemId() ==  R.id.item_bear2) {
-            // case R.id.item_1:
+        if (item.getItemId() == R.id.item_bear1) {
+            //About App toast
+            Toast.makeText(getApplicationContext(), "This app will generate the photo of a bear." +
+                            " Enter the dimensions in pixels to retrieve the image of a bear",
+                    Toast.LENGTH_LONG).show();
 
+        } else if ( item.getItemId() ==  R.id.item_bear2) {
+            // Delete Menu Item
             AlertDialog.Builder builder = new AlertDialog.Builder(BearActivity.this);
             //get index
             // int position = getAbsoluteAdapterPosition();
-
-
             //alert dialog
             builder.setTitle("Question:")
                     //message on alert button
@@ -186,31 +261,72 @@ public class BearActivity extends AppCompatActivity {
                     //set words of alert buttons
                     .setPositiveButton("Yes", (dialog, cl) -> {
 
-                    })
+                       /* Snackbar.make( binding.recycleView, "You deleted image #" + position, Snackbar.LENGTH_LONG)
+                                .setAction("Undo", click -> {
 
-                    //make window appear
+                                    Executor thread2 = Executors.newSingleThreadExecutor();
+                                    thread2.execute(() -> {
+                                        cmDAO.insertMessage(m);
+
+                                        messages.add(position,m);
+                                        runOnUiThread( () ->  myAdapter.notifyDataSetChanged()); });
+                                })
+                                .show();*/
+
+                    })
                     .create().show();
 
-        }
-        else if (item.getItemId() == R.id.item_bear1) {
+        } else if (item.getItemId() == R.id.item_bear3) {
+            //Help Menu Item
             Toast.makeText(getApplicationContext(), "Enter width and height as hinted in pixels",
                     Toast.LENGTH_SHORT).show();
+        } else if ( item.getItemId() ==  R.id.item_bear4) {
+            // Delete Menu Item
+            AlertDialog.Builder builder = new AlertDialog.Builder(BearActivity.this);
+            //get index
+            // int position = getAbsoluteAdapterPosition();
+            //alert dialog
+            builder.setTitle("Question:")
+                    //message on alert button
+                    .setMessage("Do you want to save this image: " /*+ item.getItemId(R.id.message).getText()*/)
+                    .setNegativeButton("No", (dialog, cl) -> {
+                    })
+                    //set words of alert buttons
+                    .setPositiveButton("Yes", (dialog, cl) -> {
+
+                           /* Snackbar.make( binding.recycleView, "You saved image #" + position, Snackbar.LENGTH_LONG)
+                                .setAction("Undo", click -> {
+
+                                    Executor thread2 = Executors.newSingleThreadExecutor();
+                                    thread2.execute(() -> {
+                                        cmDAO.insertMessage(m);
+
+                                        messages.add(position,m);
+                                        runOnUiThread( () ->  myAdapter.notifyDataSetChanged()); });
+                                })
+                                .show();*/
+
+                    })
+                    .create().show();
         }
+
         return true ;
     }
     /**
      *
-     * This method creates and stores shared preferences files
+     * This function creates and stores shared preferences files
      */
     @Override
     protected void onPause() {
         //Shared preferences
+        //
         SharedPreferences bearprefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-       SharedPreferences.Editor editor = bearprefs.edit();
+       SharedPreferences.Editor edit = bearprefs.edit();
 
-        editor.putString("Height", binding.bearHeight.getText().toString() );
-        editor.putString("Width", binding.bearWidth.getText().toString() );
-        editor.apply();
+        edit.putString("Height", binding2.bearHeight.getText().toString() );
+        edit.putString("Width", binding2.bearWidth.getText().toString() );
+        edit.putString("Image", binding2.bearImage.toString());
+        edit.apply();
 
         super.onPause();
     }

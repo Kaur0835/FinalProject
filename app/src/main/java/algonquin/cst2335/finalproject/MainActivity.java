@@ -1,33 +1,34 @@
 package algonquin.cst2335.finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 
-import algonquin.cst2335.finalproject.databinding.ActivityBearBinding;
 import algonquin.cst2335.finalproject.databinding.ActivityMainBinding;
 
-
+/**
+ * This class is the first Activity of this app; it contains a text message
+ * and buttons to s
+ *
+ * @author Kaur, Iesha
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+     private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
+        setContentView(binding.getRoot());
 
         binding.bearButton.setOnClickListener(click -> {
 
-
             Intent bearPage = new Intent(MainActivity.this, BearActivity.class);
-            bearPage.putExtra("Bear Image", " ");
             startActivity(bearPage);
 
         });

@@ -6,19 +6,23 @@
         android:id="@+id/item_bear1"
         android:icon="@drawable/app_bear_icon"
         android:title="About"
-        app:showAsAction="always|ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/item_bear2"
         android:icon="@drawable/garbage_icon_bear"
         android:title="Delete"
-        app:showAsAction="always|ifRoom" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/item_bear3"
         android:icon="@drawable/help_icon_bear"
         android:title="Help"
-        app:showAsAction="always|ifRoom" />
-
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_bear4"
+        android:icon="@android:drawable/stat_sys_download"
+        android:title="Save"
+        app:showAsAction="never" />
 
 </menu>
